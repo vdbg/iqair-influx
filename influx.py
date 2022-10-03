@@ -23,8 +23,3 @@ class InfluxConnector:
         with self.__get_client() as client:
             with client.write_api() as write_api:
                 write_api.write(bucket=self.bucket, record=records)
-
-    def __run_query(self, query) -> None:
-        with self.__get_client() as client:
-            query_api = client.query_api()
-            return query_api.query(query)

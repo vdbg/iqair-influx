@@ -4,7 +4,6 @@ import time
 import yaml
 import logging
 
-from datetime import datetime
 from influx import InfluxConnector
 from iqair import IqAirConnector
 from pathlib import Path

@@ -15,7 +15,7 @@ Allows for importing data from [IQAir](https://www.iqair.com/) to [InfluxDB](htt
 ### With Docker
 
 Dependency: Docker installed.
-. 
+
 2. Download and run the Docker image: `sudo docker run --name iqair -v config.yaml:/app/config.yaml vdbg/iqair-influx:latest`
 3. Copy the template config file from the image: `sudo docker cp iqair:/app/template.config.yaml config.yaml`
 4. Edit `config.yaml` by following the instructions in the file
@@ -44,7 +44,21 @@ Dependency: Python3 and pip3 installed. `sudo apt-get install python3-pip` if mi
 4. `pip3 install -r requirements.txt`
 5. `python3 main.py` or `./main.py`
 
+## Troubleshooting
+
+Although this isn't documented on IQAir's [plan comparison page](https://www.iqair.com/air-pollution-data-api/plans), it appears that with the free plan
+the data is only refreshed once per hour. Since InfluxDB automatically de-dupes identical measurements, this means only two measurements (one weather, one pollution) per hour will end up showing up in the bucket.
+
+The free plan also has a restriction of 5 requests per minute. To query more than 5 locations, create additional docker containers and start them more than one minute apart.
 
 ## Air Quality Index explained
 
 The US and CN threseholds are both listed on [Wikipedia](https://en.wikipedia.org/wiki/Air_quality_index#United_States).
+
+## Grafana
+
+[This template](grafana/dashboard.json) is what produced the following [Grafana](https://grafana.com/) dashboard:
+![Grafana dashboard](grafana/dashboard.png)
+
+Note: the dashboard uses influxdb v1 compatibility mode. [This page](https://www.techetio.com/2021/11/29/influxdb-v2-using-the-v1-api-for-v1-dependent-applications/) explains how to enable it.
+ 
