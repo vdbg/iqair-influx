@@ -1,5 +1,4 @@
 # iqair-influx
-Import air quality data from  to InfluxDB
 
 Allows for importing data from [IQAir](https://www.iqair.com/) to [InfluxDB](https://www.influxdata.com/) v2.
 
@@ -16,12 +15,12 @@ Allows for importing data from [IQAir](https://www.iqair.com/) to [InfluxDB](htt
 
 Dependency: Docker installed.
 
-2. Download and run the Docker image: `sudo docker run --name iqair -v config.yaml:/app/config.yaml vdbg/iqair-influx:latest`
-3. Copy the template config file from the image: `sudo docker cp iqair:/app/template.config.yaml config.yaml`
-4. Edit `config.yaml` by following the instructions in the file
-5. Start the container again to verify the settings are correct: `sudo docker start iqair -i`
-6. Once the settings are finalized, `Ctrl-C` to stop the container, `sudo docker container rm iqair` to delete it
-7. Start the container with final settings:
+1. Download and run the Docker image: `sudo docker run --name iqair -v config.yaml:/app/config.yaml vdbg/iqair-influx:latest`
+2. Copy the template config file from the image: `sudo docker cp iqair:/app/template.config.yaml config.yaml`
+3. Edit `config.yaml` by following the instructions in the file
+4. Start the container again to verify the settings are correct: `sudo docker start iqair -i`
+5. Once the settings are finalized, `Ctrl-C` to stop the container, `sudo docker container rm iqair` to delete it
+6. Start the container with final settings:
 
 ``
 sudo docker run \
