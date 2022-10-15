@@ -15,11 +15,11 @@ class InfluxConnector:
     def __get_client(self) -> InfluxDBClient:
         return InfluxDBClient(url=self.url, token=self.token, org=self.org, debug=False)
 
-    def add_samples(self, records, size: int) -> None:
-        if size < 1:
+    def add_samples(self, records) -> None:
+        if not records:
             return
 
-        logging.info(f"Importing {size} record(s) to influx")
+        logging.info(f"Importing {len(records)} record(s) to influx")
         with self.__get_client() as client:
             with client.write_api() as write_api:
                 write_api.write(bucket=self.bucket, record=records)

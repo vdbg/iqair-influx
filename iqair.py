@@ -9,17 +9,17 @@ import urllib.parse
 
 class Location:
     def __init__(self, name: str, conf: dict) -> None:
-        self.name = name
-        self.country = conf["country"]
-        self.state = conf["state"]
-        self.city = conf["city"]
+        self.name: str = name
+        self.country: str = conf["country"]
+        self.state: str = conf["state"]
+        self.city: str = conf["city"]
         logging.debug(f"Loaded {self.name} with country={self.country}, state={self.state}, city={self.city}")
 
 
 class IqAirConnector:
     def __init__(self, conf: dict) -> None:
         self.apikey: str = conf["apikey"]
-        self.api = conf["api"]
+        self.api: str = conf["api"]
         self.measurement_pollution: str = conf["measurement_pollution"]
         self.measurement_weather: str = conf["measurement_weather"]
         if not self.measurement_weather and not self.measurement_pollution:

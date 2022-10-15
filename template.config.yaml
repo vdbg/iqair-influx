@@ -21,7 +21,7 @@ iqair:
     BellevueWA:
       country: "USA"
       state: "Washington"
-      city: "Seattle"
+      city: "Bellevue"
     PortlandOR:
       country: "USA"
       state: "Oregon"

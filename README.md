@@ -20,7 +20,7 @@ Dependency: Docker installed.
 3. Edit `config.yaml` by following the instructions in the file
 4. Start the container again to verify the settings are correct: `sudo docker start iqair -i`
 5. Once the settings are finalized, `Ctrl-C` to stop the container, `sudo docker container rm iqair` to delete it
-6. Start the container with final settings:
+6. Start the container with the final settings:
 
 ``
 sudo docker run \

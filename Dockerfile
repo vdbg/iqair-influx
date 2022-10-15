@@ -6,7 +6,7 @@ USER aqi
 
 WORKDIR /app
 
-# Prevents Python from writing pyc files to disc
+# Prevents Python from generating pyc files to reduce image size
 ENV PYTHONDONTWRITEBYTECODE 1
 # Prevents Python from buffering stdout and stderr
 ENV PYTHONUNBUFFERED 1

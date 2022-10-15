@@ -44,7 +44,7 @@ try:
     while True:
         try:
             records = iqAirConnector.fetch_data()
-            influxConnector.add_samples(records, len(records))
+            influxConnector.add_samples(records)
 
         except Exception as e:
             logging.exception(e)
