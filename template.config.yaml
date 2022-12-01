@@ -8,14 +8,16 @@ influx:
 main:
   logverbosity: INFO # by increasing level of verbosity: FATAL, ERROR, WARNING, INFO, DEBUG
   # how long to wait before pulling data again from the device. 0 to only read once. 
-  # Note: IQAir's free plan appears to only refresh data once per hour
-  loop_seconds: 1800
+  # Note: IQAir's free plan appears to only refresh data once per hour, so running more often than every 30m is probably wasteful
+  loop_seconds: 1800 # refresh data every 30m
 
 iqair:
-  apikey: "xxxxxxxx-yyyy-zzzz-vvvv-wwwwwwwwwwww"  # obtained from https://www.iqair.com/dashboard/api
-  api: "http://api.airvisual.com/v2"              # should not need to change this entry
-  measurement_pollution: "pollution"              # name to give to pollution measurements in InfluxDB. If empty string, these are not imported
-  measurement_weather: "weather"                  # name to give to weather measurements in InfluxDB. If empty string, these are not imported
+  apikeys: [ "xxxxxxxx-yyyy-zzzz-vvvv-wwwwwwwwwwww" ] # obtained from https://www.iqair.com/dashboard/api. Can specify more than 1 API key
+  api: "http://api.airvisual.com/v2"                  # should not need to change this entry
+  measurement_pollution: "pollution"                  # name to give to pollution measurements in InfluxDB. If empty string, these are not imported
+  measurement_weather: "weather"                      # name to give to weather measurements in InfluxDB. If empty string, these are not imported
+  throttle_retry_wait_seconds: 30                     # max amount of time to wait when retrying when being throttled
+  throttle_retry_max_count: 1                         # max amount of times to retry when being throttled
   locations: # list of locations to import. Note: IQAir's free plan only allows 5 requests per minute, which translates to 5 locations
     # the key (here: BellevueWA, PortlandOR) is free-form text and will be used as tag in InfluxDB
     BellevueWA:

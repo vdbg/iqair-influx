@@ -48,7 +48,13 @@ Dependency: Python3 and pip3 installed. `sudo apt-get install python3-pip` if mi
 Although this isn't documented on IQAir's [plan comparison page](https://www.iqair.com/air-pollution-data-api/plans), it appears that with the free plan
 the data is only refreshed once per hour. Since InfluxDB automatically de-dupes identical measurements, this means only two measurements (one weather, one pollution) per hour will end up showing up in the bucket.
 
-The free plan also has a restriction of 5 requests per minute. To query more than 5 locations, create additional docker containers and start them more than one minute apart.
+The app makes one call per location, which can be affected by the throttling restrictions of the free plan:
+* 5 requests per minute max: to query more than 5 locations, two options:
+  1. create one docker container per group of 5 locations, and start all containers at least one minute apart.
+  2. specify more than one apiKey in `config.yaml`.
+* 10,000 requests per month max: for a month of 28 days, this means no more than 1 request every 4 minutes for 1 location (8 minutes for 2 locations, etc) if continuously running. Options:
+  1. don't continuously query; for example stop querying during the night
+  2. specify more than one apiKey in `config.yaml`.
 
 ## Air Quality Index explained
 
