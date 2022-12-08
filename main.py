@@ -1,8 +1,10 @@
-#!/usr/bin/python3
+#! /usr/bin/env python3
 
 import time
 import yaml
 import logging
+import platform
+import sys
 
 from influx import InfluxConnector
 from iqair import IqAirConnector
@@ -29,6 +31,12 @@ def get_config():
         logging.error(f"Missing {e.filename}.")
         exit(2)
 
+
+SUPPORTED_PYTHON_MAJOR = 3
+SUPPORTED_PYTHON_MINOR = 9
+
+if sys.version_info < (SUPPORTED_PYTHON_MAJOR, SUPPORTED_PYTHON_MINOR):
+    raise Exception(f"Python version {SUPPORTED_PYTHON_MAJOR}.{SUPPORTED_PYTHON_MINOR} or later required. Current version: {platform.python_version()}.")
 
 try:
     config = get_config()
