@@ -51,8 +51,8 @@ class IqAirConnector:
             if e.status == 404:
                 logging.error("Invalid request; possible reason: API change.")
                 exit(1)
-            if e.status == 429:
-                logging.warn("Being throttled. See README.md for options.")
+            if e.status == 429 or e.status == 402:
+                logging.warn(f"Being throttled with status = {e.status}. See README.md for options.")
                 self._throttle_count += 1
                 if self._throttle_count <= self._throttle_retry_max_count:
                     time.sleep(1+self._throttle_count*random.randint(1, self._throttle_retry_wait_seconds))
