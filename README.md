@@ -51,8 +51,8 @@ the data is only refreshed once per hour. Since InfluxDB automatically de-dupes 
 The app makes one call per location, which can be affected by the throttling restrictions of the free plan:
 * 5 requests per minute max: to query more than 5 locations, two options:
   1. create one docker container per group of 5 locations and start all containers at least one minute apart.
-  2. specify more than one apiKey in `config.yaml`.
-* 10,000 requests per month max: for a month of 28 days, this means no more than 1 request every 4 minutes for 1 location (8 minutes for 2 locations, etc) if continuously running. Options:
+  2. specify more than one apiKey in `config.yaml`. The script will randomly choose one for each request.
+* 10,000 requests per month max: for a month of 31 days, this means no more than 1 request every ~5 minutes for 1 location (10 minutes for 2 locations, 15m for 3, etc) if continuously running. Options:
   1. don't continuously query; for example, stop querying during the night
   2. specify more than one apiKey in `config.yaml`.
 
