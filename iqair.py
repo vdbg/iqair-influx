@@ -53,7 +53,7 @@ class IqAirConnector:
                 logging.error("Invalid request; possible reason: API change.")
                 exit(1)
             if e.status in [429, 402]:
-                logging.warning(f"Being throttled with status = {e.status}. See README.md for options.")
+                logging.warning(f"Being throttled with status {e.status} for API key {apiKey}. See README.md for options.")
                 self._throttle_count += 1
                 # if we have multiple keys, remove the throttled one from the list of candidates
                 if len(apiKeys) > 1:
