@@ -46,13 +46,13 @@ class IqAirConnector:
                 logging.error("Invalid request; possible reason: wrong location specified.")
                 exit(1)
             if e.status == 401:
-                logging.error("Invalid API key. https://www.iqair.com/dashboard/api to retrieve one.")
+                logging.error(f"Invalid API key {apiKey}. https://www.iqair.com/dashboard/api to retrieve one.")
                 exit(1)
             if e.status == 404:
                 logging.error("Invalid request; possible reason: API change.")
                 exit(1)
             if e.status in [429, 402]:
-                logging.warn(f"Being throttled with status = {e.status}. See README.md for options.")
+                logging.warn(f"Being throttled with status {e.status} for API key {apiKey}. See README.md for options.")
                 self._throttle_count += 1
                 if self._throttle_count <= self._throttle_retry_max_count:
                     time.sleep(1+self._throttle_count*random.randint(1, self._throttle_retry_wait_seconds))
