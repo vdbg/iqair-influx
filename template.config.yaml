@@ -17,7 +17,7 @@ iqair:
   measurement_pollution: "pollution"                  # name to give to pollution measurements in InfluxDB. If empty string, these are not imported
   measurement_weather: "weather"                      # name to give to weather measurements in InfluxDB. If empty string, these are not imported
   throttle_retry_wait_seconds: 30                     # max amount of time to wait when retrying when being throttled
-  throttle_retry_max_count: 1                         # max amount of times to retry when being throttled
+  throttle_retry_max_count: 2                         # max amount of times to retry when being throttled
   locations: # list of locations to import. Note: IQAir's free plan only allows 5 requests per minute, which translates to 5 locations
     # the key (here: BellevueWA, PortlandOR) is free-form text and will be used as tag in InfluxDB
     BellevueWA:

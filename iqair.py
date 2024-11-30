@@ -20,7 +20,7 @@ class Location:
 
 class IqAirConnector:
     def __init__(self, conf: dict) -> None:
-        self._apikeys: list[str] = conf["apikeys"]
+        self._apikeys: list[str] = list(map(str.strip, conf["apikeys"]))
         self._api: str = conf["api"]
         self._measurement_pollution: str = conf["measurement_pollution"]
         self._measurement_weather: str = conf["measurement_weather"]
@@ -28,36 +28,41 @@ class IqAirConnector:
         self._throttle_retry_max_count: int = conf["throttle_retry_max_count"]
         self._throttle_count: int = 0
         if not self._measurement_weather and not self._measurement_pollution:
-            logging.warn("Both measurement_pollution and measurement_weather aren't specified, therefore no records will be imported.")
+            logging.warning("Both measurement_pollution and measurement_weather aren't specified, therefore no records will be imported.")
         self._locations: list[Location] = [Location(name, data) for name, data in conf["locations"].items()]
 
-    def __fetch_data(self, location: Location) -> json:
-        apiKey = random.choice(self._apikeys)
+    def __fetch_data(self, location: Location, apiKeys: list[str]) -> json:
+        logging.debug(f"{len(apiKeys)} API key(s) available.")
+        
+        apiKey = random.choice(apiKeys)
         url = f"{self._api}/city?{urllib.parse.urlencode({'state': location.state, 'city' : location.city, 'country': location.country, 'key': apiKey})}"
-        logging.debug(f"url: {url}")
+        logging.debug(f"Request url: {url}")
 
         try:
             response = urllib.request.urlopen(url).read()
             self._throttle_count = 0
             return json.loads(response)
         except urllib.error.HTTPError as e:
-            logging.error(f"Request to IqAir failed: {e.status}, {e.strerror}")
             if e.status == 400:
-                logging.error("Invalid request; possible reason: wrong location specified.")
+                logging.error(f"Invalid request; possible reason: wrong location '{location.country}/{location.state}/{location.city}' specified.")
                 exit(1)
-            if e.status == 401:
-                logging.error("Invalid API key. https://www.iqair.com/dashboard/api to retrieve one.")
+            if e.status in [401, 403]:
+                logging.error(f"Invalid API key '{apiKey}'. https://www.iqair.com/dashboard/api to retrieve one.")
                 exit(1)
             if e.status == 404:
                 logging.error("Invalid request; possible reason: API change.")
                 exit(1)
             if e.status in [429, 402]:
-                logging.warn(f"Being throttled with status = {e.status}. See README.md for options.")
+                logging.warning(f"Being throttled with status = {e.status}. See README.md for options.")
                 self._throttle_count += 1
+                # if we have multiple keys, remove the throttled one from the list of candidates
+                if len(apiKeys) > 1:
+                    apiKeys.remove(apiKey)
                 if self._throttle_count <= self._throttle_retry_max_count:
                     time.sleep(1+self._throttle_count*random.randint(1, self._throttle_retry_wait_seconds))
-                    return self.__fetch_data(location)
+                    return self.__fetch_data(location, apiKeys)
 
+            logging.error(f"Request to IqAir failed: {e.status}, {e.strerror}")
             return None
 
     def __construct_record(self, measurement: str, location: Location, data: dict, measurement_data: dict) -> dict:
@@ -71,8 +76,9 @@ class IqAirConnector:
 
     def fetch_data(self) -> list:
         records = []
+        apiKeys = list(self._apikeys)
         for location in self._locations:
-            data = self.__fetch_data(location)
+            data = self.__fetch_data(location, apiKeys)
             if not data:
                 continue
             status = data["status"]
