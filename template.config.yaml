@@ -12,6 +12,7 @@ main:
   loop_seconds: 1800 # refresh data every 30m
 
 iqair:
+  # IMPORTANT NOTE: IQAir auto-expires API keys (at least, the free plan ones) after 1 year. If one stops working, check first if not expired
   apikeys: [ "xxxxxxxx-yyyy-zzzz-vvvv-wwwwwwwwwwww" ] # obtained from https://www.iqair.com/dashboard/api. Can specify more than 1 API key
   api: "http://api.airvisual.com/v2"                  # should not need to change this entry
   measurement_pollution: "pollution"                  # name to give to pollution measurements in InfluxDB. If empty string, these are not imported
