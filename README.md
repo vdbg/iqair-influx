@@ -5,7 +5,7 @@ Allows for importing data from [IQAir](https://www.iqair.com/) to [InfluxDB](htt
 
 ## Requirements
 
-- An [IQAir API Key](https://www.iqair.com/dashboard/api).
+- An [IQAir API Key](https://www.iqair.com/dashboard/api). NOTE: IQAir API keys expire after 1 year. You will need to re-create a new API key every year.
 - A device with either [Docker](https://www.docker.com/) or Python 3.7 or later installed.
 - [InfluxDB](https://en.wikipedia.org/wiki/InfluxDB) v2 installed on this device or another device, and a bucket created in influxDB.
 
@@ -56,6 +56,7 @@ The app makes one call per location, which can be affected by the throttling res
   1. don't continuously query; for example, stop querying during the night
   2. specify more than one apiKey in `config.yaml`.
 * There appears to be an undocumented per year limit. My API keys end up being permanently rejected around November, even when not issuing queries for several days.
+* API keys expire after 1 year, regardless of usage. You will need to re-create a new key every year.
 
 ## Air Quality Index explained
 
@@ -67,4 +68,4 @@ The US and CN threseholds are both listed on [Wikipedia](https://en.wikipedia.or
 ![Grafana dashboard](grafana/dashboard.png)
 
 Note: the dashboard uses influxdb v1 compatibility mode. [This page](https://www.techetio.com/2021/11/29/influxdb-v2-using-the-v1-api-for-v1-dependent-applications/) explains how to enable it.
- 
+
